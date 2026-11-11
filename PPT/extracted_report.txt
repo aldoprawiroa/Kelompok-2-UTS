@@ -1,0 +1,94 @@
+LAPORAN PROJECT UJIAN TENGAH SEMESTER (UTS)
+MATA KULIAH PEMOGRAMAN BERORIENTASI OBJECT (PBO)
+PENGEMBANGAN APLIKASI SISTEM INFOTMASI RESTORAN
+BERBASIS OBJECT ORIENTED PROGRAMMING (JAVA)
+Disusun oleh – Kelas A :
+Fadhil Anshor (13242520005)
+Aldo Prawiro Akbar (13242520007)
+Zhafirah Haya Destiani (13242520008)
+PROGRAM STUDI TEKNOLOGI INFORMASI
+FAKULTAS TEKNIK DAN ILMU KOMPUTER
+UNIVERSITAS MUHAMMADIYAH SEMARANG
+TAHUN AKADEMIK 2026/2027
+DAFTAR ISI
+BAB 1
+PENDAHULUAN
+LATAR BELAKANG
+Industri kuliner dan pengoperasian restoran modern membutuhkan sistem pengolahan data yang cepat, terintegrasi, serta minim kesalahan manusia (human error). Operasional restoran harian melibatkan setidaknya tiga pilar utama yang saling berkaitan erat, yaitu: pengelolaan katalog menu (makanan utama, minuman segar, dan hidangan penutup), manajemen sumber daya manusia atau pegawai restoran (chef, pelayan, dan kasir), serta pencatatan transaksi pesanan pelanggan (makan di tempat, dibungkus, maupun layanan pesan antar).
+Jika pencatatan operasional ini dilakukan secara konvensional atau menggunakan pemrosesan data linier berukuran tunggal, risiko ketidakselarasan harga, kekeliruan jadwal kerja pegawai, hingga kesalahan pengantaran pesanan akan sangat tinggi. Oleh karena itu, penerapan paradigma Object-Oriented Programming (OOP) berbasis bahasa pemrograman Java menjadi solusi fundamental. Melalui OOP, seluruh komponen bisnis restoran dapat dimodelkan menjadi kelas-kelas terisolasi yang modular, aman (melalui enkapsulasi data), dapat diwariskan, serta adaptif terhadap perubahan sistem di masa depan.
+TUJUAN PRAKTIKUM
+Membangun aplikasi konsol Java Sistem Informasi Restoran yang mampu mengelola data menu, pegawai, dan pesanan secara terstruktur menggunakan penyimpanan dinamis `ArrayList`.
+Menerapkan secara utuh 5 pilar utama OOP, yaitu Class & Object, Encapsulation, Inheritance, Polymorphism, serta Abstraction & Interface.
+Merancang arsitektur perangkat lunak menggunakan 4 diagram UML (*Class Diagram*, *Use Case Diagram*, *Sequence Diagram*, dan *Activity Diagram*) yang selaras 100% dengan kode Java yang dieksekusi.
+Membagi tanggung jawab pengerjaan modul secara adil kepada 3 anggota kelompok (1 *Parent Abstract Class* dan 3 *Child Class* per anggota).
+DESKRIPSI SINGKAT SISTEM
+Sistem Informasi Restoran merupakan aplikasi berbasis antarmuka baris perintah (CLI) interaktif. Aplikasi ini menyediakan 6 fungsi operasional utama: (1) Input Data Menu Restoran, (2) Input Data Pegawai Restoran, (3) Input Data Pesanan Pelanggan, (4) Tampilkan Semua Data secara polimorfik, (5) Ubah Data (*Update*) berdasarkan ID objek, dan (6) Keluar dari Sistem.
+BAB II
+PERANCANGAN SISTEM
+2.1 STURKTUR CLASS DAN PEMBAGIAN TUGAS
+Sesuai ketentuan umum proyek untuk kelompok beranggotakan 3 mahasiswa, sistem dirancang terdiri dari **14 file `.java`**, yang terbagi atas 1 Interface bersama, 3 Abstract Parent Class, 9 Child Class (masing-masing 3 child class per parent), dan 1 Main Class.
+2.2 CLASS DIAGRAM
+Berdasarkan Class Diagram Sistem Informasi Restoran di atas, arsitektur program dirancang menggunakan prinsip Pemrograman Berorientasi Objek (OOP) yang terdiri dari 1 Interface, 3 Abstract Parent Class, 9 Subclass (Child Class), dan 1 Main Class dengan rincian sebagai berikut:
+1. Interface LayananRestoran: Merupakan interface puncak yang memiliki kontrak method tampilkanAktivitas(): void. Interface ini diimplementasikan (realization / implements) oleh ketiga abstract class utama.
+2. Abstract Class MenuRestoran (Tanggung Jawab: Zhafirah Haya Destiani - 13242520008): Memiliki atribut private (- idMenu: String, - namaMenu: String, - harga: int) yang menerapkan konsep Encapsulation melalui method getter dan setter. Class ini mewariskan sifatnya (inheritance / extends) kepada 3 subclass, yaitu: - MenuMakanan - MenuMinuman – MenuDessert.
+3. Abstract Class Pegawai (Tanggung Jawab: Fadhil Anshor - 13242520005): Memiliki atribut private (- idPegawai: String, - namaPegawai: String, - shiftKerja: String) serta method abstract getJabatan() dan tampilkanTugas(). Class ini memiliki 3 subclass turunan, yaitu: - Chef - Pelayan – Kasir.
+4. Abstract Class Pesanan (Tanggung Jawab: Aldo Prawiro Akbar - 13242520007): Memiliki atribut private (- idPesanan: String, - namaPelanggan: String, - totalHarga: int) serta method abstract getJenisPesanan() dan tampilkanStatusLayanan(). Class ini memiliki 3 subclass turunan, yaitu: - PesananDineIn - PesananTakeAway - PesananDelivery
+5. Class Main: Berhubungan secara dependency (<<uses>>) dengan MenuRestoran, Pegawai, dan Pesanan menggunakan struktur penyimpanan dinamis ArrayList untuk mengelola input, penampilan data polimorfisme, serta pengubahan data.
+2.3 USE CASE DIAGRAM
+Use Case Diagram Sistem Informasi Restoran menggambarkan interaksi fungsional antara aktor pengguna dengan sistem aplikasi yang dibangun:
+1. Aktor (Pengguna / Admin Kasir Restoran): Merupakan entitas pengguna yang mengoperasikan aplikasi untuk mengelola data operasional restoran.
+2. Fitur Sistem (Use Case Utama & Relasi <<extend>>):
+Input Data Menu: Pengguna dapat memilih jenis menu (Makanan/Minuman/Dessert), memasukkan data menu (ID, Nama Menu, Harga), lalu menyimpan data ke sistem.
+Input Data Pegawai: Pengguna dapat memilih jabatan pegawai (Chef/Pelayan/Kasir), memasukkan data pegawai (ID, Nama, Shift Kerja), lalu menyimpan data pegawai.
+Input Data Pesanan: Pengguna dapat memilih jenis layanan pesanan (Dine-In/Take-Away/Delivery), memasukkan data pesanan (ID, Nama Pelanggan, Total Harga), lalu menyimpan data pesanan.
+Tampilkan Semua Data: Pengguna dapat melihat seluruh daftar data menu, daftar data pegawai, dan daftar data pesanan yang telah tersimpan.
+Ubah Data: Pengguna dapat memperbarui informasi menu (Nama/Harga), data pegawai (Nama/Shift), maupun data pesanan (Nama Pelanggan/Total Harga) berdasarkan ID.
+Keluar: Mengakhiri eksekusi aplikasi.
+2.4 SEQUENCE DIAGRAM
+Sequence Diagram Sistem Informasi Restoran menjelaskan urutan komunikasi pesan antar objek berdasarkan waktu ketika fitur dijalankan, yang terbagi ke dalam 4 skenario utama:
+1. Alur Input Data Menu: Pengguna memilih menu 1 pada objek Main. Objek Main memanggil prosedur input data dan menginstansiasi objek subclass sesuai pilihan pengguna (misalnya new MenuMakanan(id, nama, harga)). Objek yang terbentuk dikembalikan ke Main lalu disimpan ke dalam objek ArrayList melalui pemanggilan method daftarMenu.add(objek).
+2. Alur Tampilkan Semua Data: Pengguna memilih menu 4 pada Main. Objek Main melakukan iterasi dan memanggil method tampilkanData() secara berurutan kepada objek MenuRestoran, Pegawai, dan Pesanan, lalu mengembalikan tampilan informasi ke layar pengguna.
+3. Alur Ubah Data: Pengguna memilih menu 5 (Ubah Data) dan memasukkan ID data yang ingin diperbarui. Objek Main mencari objek terkait dan memanggil method setter (seperti setNamaMenu(), setHarga(), setShiftKerja(), atau setTotalHarga()) sehingga data di dalam ArrayList berhasil diperbarui.
+4. Alur Polymorphism pada Tampilan Data: Ketika pengguna memilih menu Tampilkan Semua Data, pemanggilan method tampilkanData() dan tampilkanAktivitas() pada referensi parent class secara otomatis mengeksekusi implementasi method milik masing-masing subclass (Makanan/Minuman/Dessert, Chef/Pelayan/Kasir, serta DineIn/TakeAway/Delivery).
+2.5. ACTIVITY DIAGRAM
+Activity Diagram Sistem Informasi Restoran memodelkan alur kerja aktivitas aplikasi dari awal dijalankan hingga selesai yang dibagi ke dalam 4 swimlane (Pengguna, Main, LayananRestoran, dan Kelas Terkait):
+1. Inisialisasi & Menu Utama: Aktivitas dimulai saat Pengguna menjalankan aplikasi. Sistem pada bagian Main menampilkan menu utama, kemudian Pengguna memilih menu yang diinginkan.
+2. Percabangan Proses (Decision): Sistem mengevaluasi pilihan menu pengguna ke dalam tiga alur pengelolaan utama: - Pengelolaan Menu: Pengguna memilih jenis menu (MenuMakanan, MenuMinuman, atau MenuDessert), kemudian sistem menyimpan atau menampilkan hasil data menu. - Pengelolaan Pegawai: Pengguna memilih jabatan pegawai (Chef, Pelayan, atau Kasir), kemudian sistem menyimpan atau menampilkan hasil data pegawai. - Pengelolaan Pesanan: Pengguna memilih jenis pesanan (PesananDineIn, PesananTakeAway, atau PesananDelivery), kemudian sistem menyimpan atau menampilkan hasil data pesanan.
+3. Penampilan Informasi & Selesai: Seluruh hasil pemrosesan dikembalikan ke Main untuk ditampilkan kepada Pengguna. Pengguna melihat hasil informasi di layar konsol hingga memilih keluar dan aktivitas berakhir (Finish Node
+BAB III
+IMPLEMENTASI DAN PENGUJIAN
+3.1 IMPLEMENTASI KONSEP OOP
+Berikut adalah penjelasan penerapan kelima konsep Pemrograman Berorientasi Objek pada aplikasi Sistem Informasi Restoran:
+1. Class dan Object
+Class digunakan sebagai cetak biru (blueprint) dari entitas restoran, sedangkan Object adalah instansiasi nyata dari class tersebut menggunakan kata kunci "new".
+Kode di atas membuat objek baru dari class MenuMakanan dan menyimpannya ke dalam koleksi ArrayList daftarMenu.
+2. Encapsulation
+Encapsulation diterapkan dengan memberikan hak akses "private" pada seluruh atribut di dalam parent class (MenuRestoran, Pegawai, dan Pesanan) agar data tidak dapat diakses sembarangan dari luar class. Akses pembacaan dan pengubahan nilai dilakukan melalui method "public" Getter dan Setter.
+Atribut namaMenu dan harga dilindungi dengan modifier private dan hanya dapat dimodifikasi saat fitur Ubah Data memanggil setNamaMenu() atau setHarga().
+3. Inheritance (Pewarisan)
+Inheritance diterapkan menggunakan kata kunci "extends" di mana setiap parent class memiliki 3 child class yang mewarisi atribut serta method induknya. Constructor child class memanggil constructor induk menggunakan kata kunci "super(...)".
+Class Chef mewarisi atribut idPegawai, namaPegawai, dan shiftKerja dari class induk Pegawai tanpa harus mendeklarasikan ulang atribut tersebut.
+4. Polymorphism
+Polymorphism diterapkan melalui method overriding (@Override) pada setiap child class. Ketika method tampilkanData() dan tampilkanAktivitas() dipanggil melalui referensi parent class di dalam perulangan ArrayList, program secara dinamis mengeksekusi method sesuai jenis objek subclass-nya.
+Satu perintah p.tampilkanData() menghasilkan keluaran tugas yang berbeda tergantung apakah objek di dalamnya adalah Chef, Pelayan, atau Kasir.
+5. Abstarction dan Interface
+Interface LayananRestoran mendefinisikan kontrak method tampilkanAktivitas(), sedangkan MenuRestoran, Pegawai, dan Pesanan dirancang sebagai abstract class yang mendefinisikan kerangka dasar dan method abstract untuk diimplementasikan oleh subclass masing-masing.
+3.2 IMPLEMENTASI PROGRAM
+Program utama (Main.java) mengintegrasikan komponen Scanner untuk membaca input pengguna dan tiga buah ArrayList untuk menampung objek MenuRestoran, Pegawai, dan Pesanan. Perulangan do-while dan struktur switch-case digunakan untuk mengatur navigasi ke-6 menu aplikasi.
+3.3 HASIL PENGUJIAN PROGRAM
+Berikut adalah hasil pengujian fungsionalitas aplikasi Sistem Informasi Restoran saat dijalankan:
+1. Tampilan Menu Utama Aplikasi: Menampilkan 6 opsi menu interaktif kepada pengguna.
+2. Proses Input Data: Pengguna menginputkan data Menu (Makanan/Minuman/Dessert), Pegawai (Chef/Pelayan/Kasir), dan Pesanan (Dine-In/Take-Away/Delivery).
+3. Proses Pengolahan & Ubah Data: Pengguna mengubah data yang sudah tersimpan menggunakan ID.
+4. Output Program (Tampilkan Semua Data): Menampilkan seluruh data secara polimorfik ke layar konsol.
+BAB IV
+PENUTUP
+4.1 KESIMPULAN
+Berdasarkan hasil perancangan, implementasi, dan pengujian aplikasi Sistem Informasi Restoran yang telah dilakukan oleh Kelompok 2, dapat disimpulkan bahwa:
+1. Aplikasi Sistem Informasi Restoran berbasis Java telah berhasil dibangun untuk mengelola data menu hidangan, data pegawai restoran, serta data pesanan pelanggan secara efektif menggunakan penyimpanan dinamis ArrayList.
+2. Seluruh konsep utama Pemrograman Berorientasi Objek (OOP) telah berhasil diterapkan secara lengkap pada 14 file kelas program, meliputi 1 Interface (LayananRestoran), 3 Abstract Parent Class (MenuRestoran, Pegawai, Pesanan), 9 Child Class yang menerapkan Inheritance dan Polymorphism, serta penerapan Encapsulation pada setiap atribut kelas.
+3. Perancangan sistem menggunakan Class Diagram, Use Case Diagram, Sequence Diagram, dan Activity Diagram terbukti mempermudah pembagian tugas tim dan menjaga konsistensi struktur kode program.
+4.2 KENDALA DAN SOLUSI
+Selama proses pengerjaan proyek UTS PBO ini, beberapa kendala yang dihadapi beserta solusinya adalah sebagai berikut:
+1. Kendala Pembacaan Input String Setelah Angka pada Scanner: Saat menggunakan method input.nextInt() untuk memilih menu atau memasukkan harga, baris input berikutnya (input.nextLine()) sempat terlewat otomatis. Solusi: Menambahkan baris perintah input.nextLine() tepat setelah pemanggilan input.nextInt() untuk membersihkan karakter newline (enter) pada buffer Scanner.
+2. Kendala Penyelarasan Struktur Class Antar Anggota Kelompok: Pada tahap awal, masing-masing anggota menggunakan penamaan method yang berbeda-beda sehingga menyulitkan pemanggilan di class Main. Solusi: Menyepakati satu Interface bersama (LayananRestoran.java) dan menyamakan pola method pada ketiga parent class sebelum mulai menulis kode child class.

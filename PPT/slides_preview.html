@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentasi UTS PBO - Sistem Informasi Restoran (Kelompok 2)</title>
+    <style>
+        :root {
+            --navy: #0F1E36;
+            --navy-light: #1A2C4C;
+            --blue: #2563EB;
+            --gold: #D97706;
+            --gold-light: #FEF3C7;
+            --bg: #F8FAFC;
+            --white: #FFFFFF;
+            --dark: #1E293B;
+            --muted: #64748B;
+            --border: #E2E8F0;
+            --green: #10B981;
+            --red: #EF4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #0b1322;
+            color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .deck-container {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background: var(--bg);
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 40px 50px;
+            flex-direction: column;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        /* Slide Themes */
+        .slide.dark {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .slide-header {
+            margin-bottom: 25px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 14px;
+            background: #E0E7FF;
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .slide.dark .badge {
+            background: var(--blue);
+            color: var(--white);
+        }
+
+        .slide-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+        }
+
+        .slide.dark .slide-title {
+            color: var(--white);
+        }
+
+        .slide-subtitle {
+            font-size: 15px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .slide.dark .slide-subtitle {
+            color: #94A3B8;
+        }
+
+        .content-grid {
+            display: grid;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .grid-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card.dark-card {
+            background: var(--navy-light);
+            border-color: #334155;
+            color: var(--white);
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card.dark-card .card-title {
+            color: var(--gold);
+        }
+
+        .bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: var(--dark);
+        }
+
+        .bullet-list li {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .bullet-list li::before {
+            content: "•";
+            color: var(--blue);
+            position: absolute;
+            left: 0;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .img-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            padding: 8px;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1100px;
+            color: #94A3B8;
+            font-size: 14px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background: var(--navy);
+            color: #fff;
+            border: 1px solid #334155;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: var(--blue);
+            border-color: var(--blue);
+        }
+
+        /* Speaker notes toggle */
+        .notes-panel {
+            width: 100%;
+            max-width: 1100px;
+            background: #1e293b;
+            color: #f1f5f9;
+            border-radius: 8px;
+            margin-top: 15px;
+            padding: 15px 20px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            display: none;
+            border-left: 4px solid var(--gold);
+        }
+
+        .notes-panel.visible {
+            display: block;
+        }
+
+        .code-box {
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Consolas', monospace;
+            font-size: 12px;
+            margin-top: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="deck-container" id="deck">
+        <!-- SLIDE 1: COVER -->
+        <div class="slide dark active" data-notes="SPEAKER NOTE - PEMBUKAAN (Fadhil Anshor): Assalamu'alaikum Warahmatullahi Wabarakatuh. Selamat pagi/siang kepada Bapak/Ibu Dosen Pengampu mata kuliah Pemrograman Berorientasi Objek dan rekan-rekan sekalian. Kami dari Kelompok 2 Kelas A (Fadhil Anshor, Aldo Prawiro Akbar, dan Zhafirah Haya Destiani) akan mempresentasikan hasil proyek UTS PBO: Pengembangan Aplikasi Sistem Informasi Restoran Berbasis Object Oriented Programming Menggunakan Java.">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                <div style="position: absolute; right: 0; top: 0;">
+                    <img src="presentation_assets/image1.png" alt="UNIMUS" style="width: 110px;">
+                </div>
+                <div style="border-left: 5px solid var(--gold); padding-left: 20px; margin-bottom: 25px;">
+                    <div style="color: var(--gold); font-size: 13px; font-weight: 700; letter-spacing: 1px; margin-bottom: 6px;">LAPORAN PROJECT UTS | PEMROGRAMAN BERORIENTASI OBJEK (JAVA)</div>
+                    <h1 style="font-size: 38px; color: #fff; line-height: 1.2;">Sistem Informasi Restoran</h1>
+                    <p style="font-size: 17px; color: #CBD5E1; margin-top: 8px;">Arsitektur Modular 14 Class Berbasis 5 Pilar OOP & Pemodelan UML</p>
+                </div>
+
+                <div class="card dark-card" style="margin-top: 20px; padding: 18px 25px;">
+                    <div style="color: var(--gold); font-size: 12px; font-weight: 700; margin-bottom: 8px;">KELOMPOK 2 - KELAS A | TEKNOLOGI INFORMASI - FTIK UNIMUS (2026/2027)</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; font-size: 14px;">
+                        <div><strong>1. Fadhil Anshor</strong><br><span style="color: #94A3B8;">13242520005 (Modul Pegawai)</span></div>
+                        <div><strong>2. Aldo Prawiro Akbar</strong><br><span style="color: #94A3B8;">13242520007 (Modul Pesanan)</span></div>
+                        <div><strong>3. Zhafirah Haya Destiani</strong><br><span style="color: #94A3B8;">13242520008 (Modul Menu)</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: AGENDA -->
+        <div class="slide" data-notes="SPEAKER NOTE (Fadhil Anshor): Presentasi kami bagi menjadi 6 agenda utama: diawali latar belakang masalah, ruang lingkup arsitektur sistem, pemodelan UML, pembuktian 5 pilar OOP pada kode, demonstrasi aplikasi, dan ditutup kendala serta kesimpulan.">
+            <div class="slide-header">
+                <span class="badge">Rencana Paparan</span>
+                <h2 class="slide-title">Agenda Presentasi Proyek UTS</h2>
+                <div class="slide-subtitle">Sistematika pemaparan materi dari perancangan hingga implementasi</div>
+            </div>
+            <div class="content-grid grid-3">
+                <div class="card">
+                    <div class="card-title"><span style="color: var(--blue);">01.</span> Latar Belakang & Masalah</div>
+                    <p style="font-size: 13px; color: var(--muted);">Tantangan pengelolaan restoran konvensional, risiko human error, dan urgensi solusi PBO.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span style="color: var(--blue);">02.</span> Ruang Lingkup & Arsitektur</div>
+                    <p style="font-size: 13px; color: var(--muted);">Spesifikasi 3 modul utama (Menu, Pegawai, Pesanan) dan komposisi 14 file Java terstruktur.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span style="color: var(--blue);">03.</span> Diagram Pemodelan UML</div>
+                    <p style="font-size: 13px; color: var(--muted);">Rancangan lengkap Class Diagram, Use Case Diagram, Sequence Diagram, & Activity Diagram.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span style="color: var(--blue);">04.</span> Penerapan 5 Pilar OOP</div>
+                    <p style="font-size: 13px; color: var(--muted);">Bukti implementasi Class/Object, Encapsulation, Inheritance, Polymorphism, dan Abstraction.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span style="color: var(--blue);">05.</span> Demonstrasi Program</div>
+                    <p style="font-size: 13px; color: var(--muted);">Pengujian 6 opsi CLI: input interaktif, penyimpanan ArrayList, update data, dan output polimorfik.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span style="color: var(--blue);">06.</span> Kendala & Kesimpulan</div>
+                    <p style="font-size: 13px; color: var(--muted);">Troubleshooting buffer enter Scanner, koordinasi sinkronisasi tim, serta saran ekspansi GUI/DB.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: LATAR BELAKANG -->
+        <div class="slide" data-notes="SPEAKER NOTE (Fadhil Anshor): Operasional restoran melibatkan menu, pegawai, dan pesanan yang saling terkait. Bila dicatat secara manual, risiko salah harga dan kekeliruan sangat tinggi. OOP Java menjadi solusi terbaik agar data modular, aman melalui enkapsulasi, dan adaptif berkembang.">
+            <div class="slide-header">
+                <span class="badge">Pendahuluan</span>
+                <h2 class="slide-title">Latar Belakang & Masalah Bisnis Restoran</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="card">
+                    <div class="card-title" style="color: var(--red);">Tantangan Restoran Konvensional</div>
+                    <ul class="bullet-list">
+                        <li><strong>Kompleksitas 3 Pilar Operasional:</strong> Menyelaraskan katalog makanan/minuman, giliran kerja pegawai, dan aliran nota pesanan.</li>
+                        <li><strong>Rawan Human Error:</strong> Pencatatan manual rentan salah hitung nota, salah jenis layanan (dine-in vs delivery), dan jadwal shift bentrok.</li>
+                        <li><strong>Sistem Kaku & Monolitik:</strong> Kode linier tanpa modularitas sangat sulit diperluas saat ada menu baru atau pegawai baru.</li>
+                        <li><strong>Ketiadaan Proteksi Data:</strong> Data sensitif seperti harga dan total bayar mudah tertimpa tanpa validasi.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title" style="color: var(--green);">Solusi Melalui Paradigma OOP</div>
+                    <ul class="bullet-list">
+                        <li><strong>Modularitas Kelas Mandiri:</strong> Entitas Menu, Pegawai, dan Pesanan dipisahkan dalam class terisolasi yang rapi.</li>
+                        <li><strong>Enkapsulasi Keamanan:</strong> Seluruh atribut private hanya dapat diakses melalui method getter & setter publik terverifikasi.</li>
+                        <li><strong>Inheritance & Reusability:</strong> Kelas turunan mewarisi atribut induk tanpa menulis ulang kode (DRY Principle).</li>
+                        <li><strong>Polymorphism Dinamis:</strong> Fleksibilitas pemanggilan method tampilkanData() sesuai bentuk nyata objek saat runtime.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: TUJUAN & RUANG LINGKUP -->
+        <div class="slide" data-notes="SPEAKER NOTE (Fadhil Anshor): Kami membagi 3 modul sistem kepada masing-masing anggota. Saudari Zhafirah pada modul Menu, saya pada modul Pegawai, dan Aldo pada modul Pesanan.">
+            <div class="slide-header">
+                <span class="badge">Spesifikasi Proyek</span>
+                <h2 class="slide-title">Tujuan & Ruang Lingkup Sistem</h2>
+            </div>
+            <div class="content-grid grid-3">
+                <div class="card" style="border-top: 4px solid var(--gold);">
+                    <div class="card-title">1. Pilar Menu Restoran</div>
+                    <div style="font-size: 11px; color: var(--gold); font-weight: 700; margin-bottom: 8px;">PJ: Zhafirah Haya Destiani</div>
+                    <ul class="bullet-list" style="font-size: 12.5px;">
+                        <li>Katalog hidangan lengkap (ID, Nama, Harga).</li>
+                        <li>3 Varian: <em>MenuMakanan</em>, <em>MenuMinuman</em>, dan <em>MenuDessert</em>.</li>
+                        <li>Method unik penyajian dan temperatur hidangan.</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-top: 4px solid var(--blue);">
+                    <div class="card-title">2. Pilar Pegawai Restoran</div>
+                    <div style="font-size: 11px; color: var(--blue); font-weight: 700; margin-bottom: 8px;">PJ: Fadhil Anshor</div>
+                    <ul class="bullet-list" style="font-size: 12.5px;">
+                        <li>Manajemen SDM (ID Pegawai, Nama, Shift Kerja).</li>
+                        <li>3 Peran: <em>Chef</em> (Dapur), <em>Pelayan</em> (Meja), dan <em>Kasir</em> (Transaksi).</li>
+                        <li>Method spesifik tugas dan deskripsi operasional harian.</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-top: 4px solid var(--green);">
+                    <div class="card-title">3. Pilar Pesanan Pelanggan</div>
+                    <div style="font-size: 11px; color: var(--green); font-weight: 700; margin-bottom: 8px;">PJ: Aldo Prawiro Akbar</div>
+                    <ul class="bullet-list" style="font-size: 12.5px;">
+                        <li>Pencatatan transaksi (ID Order, Nama Pelanggan, Total).</li>
+                        <li>3 Tipe Layanan: <em>DineIn</em>, <em>TakeAway</em>, dan <em>Delivery</em>.</li>
+                        <li>Status pengantaran dan biaya ongkir/kemasan.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: 14 CLASS -->
+        <div class="slide" data-notes="SPEAKER NOTE (Fadhil Anshor -> serah terima ke Zhafirah): Sesuai ketentuan kelompok 3 orang, sistem kami terdiri dari tepat 14 file Java. Selanjutnya untuk UML Diagram dan Modul Menu akan disampaikan oleh Zhafirah Haya Destiani.">
+            <div class="slide-header">
+                <span class="badge">Arsitektur Kode</span>
+                <h2 class="slide-title">Komposisi 14 File Java & Pembagian Modul Tim</h2>
+            </div>
+            <div class="card" style="flex: 1;">
+                <div class="card-title" style="color: var(--navy);">Struktur Hirarki 14 File Program Java</div>
+                <ul class="bullet-list" style="gap: 12px;">
+                    <li><strong>1 Interface Puncak:</strong> <code>LayananRestoran.java</code> — Kontrak global method <code>tampilkanAktivitas(): void</code>.</li>
+                    <li><strong>3 Abstract Parent Class:</strong>
+                        <br>• <code>MenuRestoran.java</code> (PJ: Zhafirah) | • <code>Pegawai.java</code> (PJ: Fadhil) | • <code>Pesanan.java</code> (PJ: Aldo).
+                    </li>
+                    <li><strong>9 Subclass Turunan (3 Child per Parent):</strong>
+                        <br>• Modul Menu: <code>MenuMakanan.java</code>, <code>MenuMinuman.java</code>, <code>MenuDessert.java</code>.
+                        <br>• Modul Pegawai: <code>Chef.java</code>, <code>Pelayan.java</code>, <code>Kasir.java</code>.
+                        <br>• Modul Pesanan: <code>PesananDineIn.java</code>, <code>PesananTakeAway.java</code>, <code>PesananDelivery.java</code>.
+                    </li>
+                    <li><strong>1 Main Controller:</strong> <code>Main.java</code> — Mengelola 3 koleksi ArrayList dinamis, navigasi Scanner 6 menu CLI, dan manipulasi data.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: CLASS DIAGRAM -->
+        <div class="slide" data-notes="SPEAKER NOTE (Zhafirah Haya Destiani): Pada Class Diagram ini terlihat Interface LayananRestoran diimplementasikan oleh MenuRestoran, Pegawai, dan Pesanan. Masing-masing memiliki 3 child class dengan pewarisan extends. Semua atribut private dan dienkapsulasi.">
+            <div class="slide-header">
+                <span class="badge">Pemodelan UML</span>
+                <h2 class="slide-title">Class Diagram: Relasi Antar 14 Entitas Program</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="img-container">
+                    <img src="Diagram/Class Diagram.png" alt="Class Diagram">
+                </div>
+                <div class="card">
+                    <div class="card-title">Analisis Hubungan Relasi OOP</div>
+                    <ul class="bullet-list" style="font-size: 13px;">
+                        <li><strong>Realization (&lt;&lt;implements&gt;&gt;):</strong> Interface <code>LayananRestoran</code> diimplementasikan oleh ke-3 parent class abstract.</li>
+                        <li><strong>Generalization (&lt;&lt;extends&gt;&gt;):</strong> 9 Subclass mewarisi seluruh atribut parent dan meng-override method abstract.</li>
+                        <li><strong>Dependency (&lt;&lt;uses&gt;&gt;):</strong> Class <code>Main</code> bergantung pada ketiga parent class untuk koleksi <code>ArrayList</code>.</li>
+                        <li><strong>Enkapsulasi Penuh:</strong> Atribut bertanda minus (-) bersifat <code>private</code>, getter/setter bertanda plus (+) bersifat <code>public</code>.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: USE CASE DIAGRAM -->
+        <div class="slide" data-notes="SPEAKER NOTE (Zhafirah Haya Destiani -> serah terima ke Aldo): Use case ini memodelkan interaksi Admin Kasir dengan 6 fitur utama dan relasi extend pada jenis menu, pegawai, dan pesanan. Selanjutnya alur Activity dan Sequence Diagram akan dijelaskan oleh Aldo.">
+            <div class="slide-header">
+                <span class="badge">Pemodelan UML</span>
+                <h2 class="slide-title">Use Case Diagram: Interaksi Fungsional Pengguna</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="img-container">
+                    <img src="Diagram/Use Case Diagram.png" alt="Use Case Diagram">
+                </div>
+                <div class="card">
+                    <div class="card-title">Aktor & Fitur Sistem</div>
+                    <ul class="bullet-list" style="font-size: 13px;">
+                        <li><strong>Aktor Utama:</strong> Pengguna / Admin Kasir Restoran yang mengoperasikan sistem CLI.</li>
+                        <li><strong>Input Data (&lt;&lt;extend&gt;&gt;):</strong> Relasi extend untuk percabangan kategori spesifik (Makanan/Minuman/Dessert, Chef/Pelayan/Kasir, dsb).</li>
+                        <li><strong>Tampilkan Semua Data:</strong> Menyajikan seluruh data polimorfisme dalam memori.</li>
+                        <li><strong>Ubah Data:</strong> Fitur pembaruan nilai objek berdasarkan ID unik.</li>
+                        <li><strong>Keluar:</strong> Terminasi eksekusi program dengan aman.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: ACTIVITY DIAGRAM -->
+        <div class="slide" data-notes="SPEAKER NOTE (Aldo Prawiro Akbar): Activity Diagram kami bagi dalam 4 swimlane: Pengguna, Main, LayananRestoran, dan Kelas Terkait. Alur percabangan decision mengevaluasi pilihan menu dan menyimpannya ke memori hingga pengguna memilih keluar.">
+            <div class="slide-header">
+                <span class="badge">Pemodelan UML</span>
+                <h2 class="slide-title">Activity Diagram: 4 Swimlane Alur Kerja Operasional</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="img-container">
+                    <img src="Diagram/Activity Diagram.png" alt="Activity Diagram">
+                </div>
+                <div class="card">
+                    <div class="card-title">4 Swimlane Alur Aktivitas</div>
+                    <ul class="bullet-list" style="font-size: 13px;">
+                        <li><strong>Swimlane Pengguna:</strong> Memulai aplikasi, memilih nomor opsi, dan memasukkan nilai parameter input.</li>
+                        <li><strong>Swimlane Main:</strong> Menampilkan interface navigasi konsol dan mengevaluasi percabangan <em>decision</em>.</li>
+                        <li><strong>Swimlane LayananRestoran:</strong> Mengeksekusi kontrak method layanan restoran.</li>
+                        <li><strong>Swimlane Kelas Terkait:</strong> Menginstansiasi objek child class dan menyimpan ke dalam ArrayList dinamis.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: SEQUENCE DIAGRAM -->
+        <div class="slide" data-notes="SPEAKER NOTE (Aldo Prawiro Akbar): Sequence Diagram membuktikan pertukaran pesan antar objek secara runut waktu, mulai dari pemanggilan constructor new, penyimpanan ArrayList.add(), pemanggilan getter/setter saat update, hingga eksekusi tampilkanData().">
+            <div class="slide-header">
+                <span class="badge">Pemodelan UML</span>
+                <h2 class="slide-title">Sequence Diagram: Urutan Pesan Antar Objek</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="img-container">
+                    <img src="Diagram/Sequence Diagram.png" alt="Sequence Diagram">
+                </div>
+                <div class="card">
+                    <div class="card-title">4 Skenario Komunikasi Objek</div>
+                    <ul class="bullet-list" style="font-size: 13px;">
+                        <li><strong>Alur Input Data:</strong> Pengguna menginput parameter -> Main menginstansiasi <code>new ChildClass()</code> -> disimpan via <code>ArrayList.add()</code>.</li>
+                        <li><strong>Alur Tampilkan Data:</strong> Main mengiterasi ArrayList dan memanggil <code>tampilkanData()</code> polimorfik.</li>
+                        <li><strong>Alur Ubah Data:</strong> Pencarian ID -> Main memanggil setter (<code>setHarga()</code>, <code>setTotalHarga()</code>) untuk update instan.</li>
+                        <li><strong>Konfirmasi Pengguna:</strong> Nilai balikan disajikan kembali ke layar konsol.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: PILAR 1 & 2 -->
+        <div class="slide" data-notes="SPEAKER NOTE (Fadhil Anshor): Pilar 1 Class & Object kami terapkan dengan instansiasi new pada 9 child class. Pilar 2 Enkapsulasi kami terapkan dengan modifier private pada semua atribut parent class dan manipulasi melalui method getter-setter public.">
+            <div class="slide-header">
+                <span class="badge">5 Pilar OOP</span>
+                <h2 class="slide-title">Pilar 1 & 2: Class & Object serta Encapsulation</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="card">
+                    <div class="card-title" style="color: var(--blue);">1. Class & Object</div>
+                    <ul class="bullet-list">
+                        <li><strong>Konsep:</strong> Class sebagai cetak biru (blueprint); Object sebagai instansiasi nyata di memori heap.</li>
+                        <li><strong>Bukti Kode:</strong>
+                            <div class="code-box">daftarMenu.add(new MenuMakanan(id, nama, harga));<br>daftarPegawai.add(new Chef(id, nama, shift));<br>daftarPesanan.add(new PesananDineIn(id, nama, total));</div>
+                        </li>
+                        <li><strong>Manfaat:</strong> Setiap pesanan dan pegawai memiliki identitas dan state tersendiri yang aman di memori.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title" style="color: var(--gold);">2. Encapsulation</div>
+                    <ul class="bullet-list">
+                        <li><strong>Konsep:</strong> Proteksi data dari akses sembarangan dengan modifier <code>private</code> dan akses lewat Getter/Setter.</li>
+                        <li><strong>Bukti Kode:</strong>
+                            <div class="code-box">private String idPesanan;<br>private String namaPelanggan;<br>private int totalHarga;<br><br>public void setTotalHarga(int totalHarga) {<br>    this.totalHarga = totalHarga;<br>}</div>
+                        </li>
+                        <li><strong>Manfaat:</strong> Menjaga konsistensi data saat fitur 'Ubah Data' (Menu 5) dijalankan.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: PILAR 3 INHERITANCE -->
+        <div class="slide" data-notes="SPEAKER NOTE (Zhafirah Haya Destiani): Pilar ketiga adalah Inheritance. Menggunakan extends dan super(), ketiga child class di masing-masing modul mewarisi atribut induk tanpa duplikasi baris kode.">
+            <div class="slide-header">
+                <span class="badge">5 Pilar OOP</span>
+                <h2 class="slide-title">Pilar 3: Inheritance (Pewarisan Sifat Antar Kelas)</h2>
+            </div>
+            <div class="card" style="flex: 1;">
+                <div class="card-title" style="color: var(--navy);">Pewarisan Atribut & Constructor via 'extends' dan 'super(...)'</div>
+                <ul class="bullet-list" style="gap: 14px; font-size: 14px;">
+                    <li><strong>Pewarisan Modul Menu:</strong> <code>MenuMakanan</code>, <code>MenuMinuman</code>, dan <code>MenuDessert</code> mewarisi atribut <code>idMenu</code>, <code>namaMenu</code>, dan <code>harga</code> dari parent <code>MenuRestoran</code>.</li>
+                    <li><strong>Pewarisan Modul Pegawai:</strong> <code>Chef</code>, <code>Pelayan</code>, dan <code>Kasir</code> mewarisi <code>idPegawai</code>, <code>namaPegawai</code>, dan <code>shiftKerja</code> dari <code>Pegawai</code>.</li>
+                    <li><strong>Pewarisan Modul Pesanan:</strong> <code>PesananDineIn</code>, <code>PesananTakeAway</code>, dan <code>PesananDelivery</code> mewarisi <code>idPesanan</code>, <code>namaPelanggan</code>, dan <code>totalHarga</code> dari <code>Pesanan</code>.</li>
+                </ul>
+                <div class="code-box" style="margin-top: 15px; font-size: 13px;">
+// Contoh pada Chef.java<br>
+public class Chef extends Pegawai {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;public Chef(String idPegawai, String namaPegawai, String shiftKerja) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super(idPegawai, namaPegawai, shiftKerja); // Memanggil constructor parent Pegawai<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: PILAR 4 POLYMORPHISM -->
+        <div class="slide" data-notes="SPEAKER NOTE (Aldo Prawiro Akbar): Pilar keempat Polymorphism dibuktikan pada loop for-each di Main.java. Dengan satu pemanggilan p.tampilkanData(), program secara dinamis mengeksekusi method subclass yang bersangkutan saat runtime.">
+            <div class="slide-header">
+                <span class="badge">5 Pilar OOP</span>
+                <h2 class="slide-title">Pilar 4: Polymorphism (Dynamic Method Dispatch)</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="card">
+                    <div class="card-title" style="color: var(--blue);">Satu Perintah, Beragam Perilaku</div>
+                    <ul class="bullet-list" style="font-size: 13px;">
+                        <li><strong>Method Overriding (@Override):</strong> Setiap child class meng-override method tampilkanData() dan tampilkanAktivitas().</li>
+                        <li><strong>Iterasi Polimorfik pada Main:</strong>
+                            <div class="code-box">for (Pegawai p : daftarPegawai) {<br>&nbsp;&nbsp;&nbsp;&nbsp;p.tampilkanData();<br>&nbsp;&nbsp;&nbsp;&nbsp;p.tampilkanAktivitas();<br>}</div>
+                        </li>
+                        <li><strong>Dinamis saat Runtime:</strong> Saat objek adalah Chef, dicetak tugas memasak; saat Pelayan, dicetak tugas meja tamu; saat Kasir, dicetak tugas transaksi pembayaran.</li>
+                    </ul>
+                </div>
+                <div class="img-container">
+                    <img src="presentation_assets/image30.png" alt="Bukti Polymorphism">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: PILAR 5 ABSTRACTION & INTERFACE -->
+        <div class="slide" data-notes="SPEAKER NOTE (Zhafirah Haya Destiani): Interface LayananRestoran mendefinisikan kontrak method wajib tampilkanAktivitas(). Sedangkan 3 abstract class mencegah instansiasi objek parsial dan mewajibkan implementasi method spesifik.">
+            <div class="slide-header">
+                <span class="badge">5 Pilar OOP</span>
+                <h2 class="slide-title">Pilar 5: Abstraction & Interface Contract</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="card">
+                    <div class="card-title" style="color: var(--blue);">Interface LayananRestoran</div>
+                    <ul class="bullet-list" style="font-size: 13px;">
+                        <li><strong>Definisi Kontrak Bersama:</strong>
+                            <div class="code-box">public interface LayananRestoran {<br>&nbsp;&nbsp;&nbsp;&nbsp;void tampilkanAktivitas();<br>}</div>
+                        </li>
+                        <li><strong>Standarisasi Sistem:</strong> Menjamin seluruh entitas restoran wajib menyajikan status aktivitas operasionalnya.</li>
+                        <li><strong>Realisasi Bersama:</strong> Diimplementasikan seragam oleh ketiga abstract class parent.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title" style="color: var(--gold);">3 Abstract Parent Class</div>
+                    <ul class="bullet-list" style="font-size: 13px;">
+                        <li><strong>Proteksi Instansiasi:</strong> Mencegah pembuatan objek umum (misal <code>new Pegawai()</code> dilarang oleh compiler).</li>
+                        <li><strong>Abstract Method yang Wajib Di-override:</strong>
+                            <br>• MenuRestoran: <code>getJenisMenu()</code>, <code>tampilkanPenyajian()</code>
+                            <br>• Pegawai: <code>getJabatan()</code>, <code>tampilkanTugas()</code>
+                            <br>• Pesanan: <code>getJenisPesanan()</code>, <code>tampilkanStatusLayanan()</code>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: DEMO 1 -->
+        <div class="slide" data-notes="SPEAKER NOTE (Aldo Prawiro Akbar): Ini adalah bukti eksekusi konsol aplikasi kami: Gambar 1 menampilkan menu utama interaktif 6 pilihan. Gambar 2 menampilkan proses input data Menu, Pegawai, dan Pesanan yang ditampung dalam ArrayList.">
+            <div class="slide-header">
+                <span class="badge">Pengujian Program</span>
+                <h2 class="slide-title">Hasil Uji Program: Menu Utama & Input Data CLI</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="card" style="align-items: center;">
+                    <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px; color: var(--navy);">Menu Utama (6 Opsi CLI)</div>
+                    <div class="img-container" style="max-height: 250px;">
+                        <img src="presentation_assets/image27.png" alt="Menu Utama">
+                    </div>
+                </div>
+                <div class="card" style="align-items: center;">
+                    <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px; color: var(--navy);">Proses Input Data Interaktif</div>
+                    <div class="img-container" style="max-height: 250px;">
+                        <img src="presentation_assets/image28.png" alt="Input Data">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 15: DEMO 2 -->
+        <div class="slide" data-notes="SPEAKER NOTE (Aldo Prawiro Akbar): Pada Gambar 3 terlihat fitur Ubah Data berdasarkan ID menggunakan setter. Pada Gambar 4, seluruh data ditampilkan secara polimorfik dengan informasi lengkap sesuai jenis objek masing-masing.">
+            <div class="slide-header">
+                <span class="badge">Pengujian Program</span>
+                <h2 class="slide-title">Hasil Uji Program: Ubah Data & Tampilan Polimorfik</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="card" style="align-items: center;">
+                    <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px; color: var(--navy);">Fitur Ubah Data (Update by ID)</div>
+                    <div class="img-container" style="max-height: 250px;">
+                        <img src="presentation_assets/image29.png" alt="Ubah Data">
+                    </div>
+                </div>
+                <div class="card" style="align-items: center;">
+                    <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px; color: var(--navy);">Tampilkan Semua Data Polimorfisme</div>
+                    <div class="img-container" style="max-height: 250px;">
+                        <img src="presentation_assets/image30.png" alt="Tampilkan Data">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 16: KENDALA & SOLUSI -->
+        <div class="slide" data-notes="SPEAKER NOTE (Fadhil Anshor): Kendala teknis yang kami hadapi adalah buffer Scanner yang terlewat setelah input integer, kami atasi dengan input.nextLine(). Kendala kedua adalah standarisasi method antar anggota yang kami atasi dengan menyepakati Interface bersama di awal.">
+            <div class="slide-header">
+                <span class="badge">Refleksi Proyek</span>
+                <h2 class="slide-title">Kendala Teknis yang Dihadapi & Solusi</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="card">
+                    <div class="card-title" style="color: var(--red);">1. Buffer Scanner Skipped Line</div>
+                    <ul class="bullet-list" style="font-size: 13px;">
+                        <li><strong>Masalah:</strong> Saat pemanggilan <code>input.nextInt()</code> diikuti <code>input.nextLine()</code>, input teks berikutnya langsung terlewat otomatis.</li>
+                        <li><strong>Penyebab:</strong> <code>nextInt()</code> hanya mengambil integer dan meninggalkan karakter newline (<code>\n</code>) di buffer stream.</li>
+                        <li><strong>Solusi:</strong> Menambahkan baris pembersih <code>input.nextLine();</code> tepat setelah setiap eksekusi <code>nextInt()</code>.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title" style="color: var(--blue);">2. Sinkronisasi Struktur Tim</div>
+                    <ul class="bullet-list" style="font-size: 13px;">
+                        <li><strong>Masalah:</strong> Pada fase awal, penamaan method antar 3 modul berbeda-beda sehingga error saat digabung ke Main.</li>
+                        <li><strong>Penyebab:</strong> Kurangnya standardisasi antarmuka kontrak sebelum penulisan kode dimulai.</li>
+                        <li><strong>Solusi:</strong> Menyepakati Interface <code>LayananRestoran</code> dan struktur parent abstract class terlebih dahulu sebelum membuat subclass.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 17: KESIMPULAN & SARAN -->
+        <div class="slide" data-notes="SPEAKER NOTE (Fadhil Anshor): Proyek ini sukses menerapkan 14 class dan 5 pilar OOP secara utuh. Ke depan sistem dapat dikembangkan dengan GUI JavaFX, database MySQL permanen, serta printer nota fisik.">
+            <div class="slide-header">
+                <span class="badge">Penutup</span>
+                <h2 class="slide-title">Kesimpulan Proyek & Saran Pengembangan</h2>
+            </div>
+            <div class="content-grid grid-2">
+                <div class="card">
+                    <div class="card-title" style="color: var(--green);">Kesimpulan Utama</div>
+                    <ul class="bullet-list" style="font-size: 13px;">
+                        <li>Aplikasi berhasil mengelola Menu, Pegawai, dan Pesanan secara terintegrasi via <code>ArrayList</code>.</li>
+                        <li>5 Pilar OOP diterapkan 100% pada 14 file Java tanpa ada pilar yang terlewat.</li>
+                        <li>4 Diagram UML selaras sempurna dengan kode program yang dieksekusi di konsol.</li>
+                        <li>Pembagian kerja tim 3 anggota berlangsung merata dan terkoordinasi rapi.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title" style="color: var(--gold);">Saran Pengembangan (Future Work)</div>
+                    <ul class="bullet-list" style="font-size: 13px;">
+                        <li><strong>Antarmuka GUI Desktop:</strong> Migrasi dari CLI konsol ke tampilan visual Java Swing atau JavaFX.</li>
+                        <li><strong>Persistensi Database:</strong> Integrasi database MySQL/PostgreSQL via JDBC menggantikan penyimpanan RAM sementara.</li>
+                        <li><strong>Pencetakan Struk Thermal:</strong> Integrasi library nota fisik kasir secara otomatis.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 18: Q&A -->
+        <div class="slide dark" data-notes="SPEAKER NOTE - PENUTUP (Fadhil Anshor): Demikian presentasi dari Kelompok 2. Kami mengundang Bapak/Ibu Dosen Pengampu serta rekan-rekan untuk sesi tanya jawab. Terima kasih. Wassalamu'alaikum Warahmatullahi Wabarakatuh.">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                <h1 style="font-size: 44px; color: var(--gold); margin-bottom: 10px;">TERIMA KASIH</h1>
+                <h2 style="font-size: 24px; color: #fff; margin-bottom: 20px;">Sesi Tanya Jawab (Q & A)</h2>
+                <p style="font-size: 16px; color: #CBD5E1; max-width: 700px; margin-bottom: 30px;">
+                    Kami mengundang Bapak/Ibu Dosen Pengampu serta rekan-rekan mahasiswa untuk memberikan pertanyaan, tanggapan, dan masukan membangun.
+                </p>
+                <div class="card dark-card" style="padding: 15px 30px; display: inline-block;">
+                    <div style="color: var(--gold); font-weight: 700; font-size: 13px;">KELOMPOK 2 - KELAS A | TEKNOLOGI INFORMASI UNIMUS</div>
+                    <div style="color: #CBD5E1; font-size: 13px; margin-top: 4px;">Fadhil Anshor • Aldo Prawiro Akbar • Zhafirah Haya Destiani</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <div class="btn-group">
+            <button onclick="prevSlide()">◀ Slide Sebelumnya</button>
+            <button onclick="nextSlide()">Slide Selanjutnya ▶</button>
+            <button onclick="toggleNotes()" style="background: #334155;">📝 Catatan Pembicara (Notes)</button>
+        </div>
+        <div id="slide-counter">Slide 1 / 18</div>
+    </div>
+
+    <!-- Speaker Notes Panel -->
+    <div class="notes-panel" id="notesPanel">
+        <strong>Speaker Note:</strong>
+        <div id="notesText" style="margin-top: 5px;"></div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        const counter = document.getElementById('slide-counter');
+        const notesPanel = document.getElementById('notesPanel');
+        const notesText = document.getElementById('notesText');
+
+        function updateSlide() {
+            slides.forEach((s, idx) => {
+                s.classList.toggle('active', idx === currentSlide);
+            });
+            counter.innerText = `Slide ${currentSlide + 1} / ${slides.length}`;
+            notesText.innerText = slides[currentSlide].getAttribute('data-notes') || 'Tidak ada catatan pembicara untuk slide ini.';
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function toggleNotes() {
+            notesPanel.classList.toggle('visible');
+        }
+
+        // Keyboard arrow navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                prevSlide();
+            } else if (e.key.toLowerCase() === 'n') {
+                toggleNotes();
+            }
+        });
+
+        updateSlide();
+    </script>
+</body>
+</html>
